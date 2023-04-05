@@ -1,0 +1,28 @@
+create table Client_Master(Client_No varchar(6) primary key,Name varchar(15),City varchar(10),Pincode number(7),Bal_Due number(6));
+insert into Client_Master values('C00001','Smitha Jain','Mumbai',400054,15000);
+insert into Client_Master values('C00002','Vandana Rao','Chennai',780001,0);
+insert into Client_Master values('C00003','Prem Pujari','Mumbai',400057,5000);
+insert into Client_Master values('C00004','Basu Nath','Mumbai',400056,0);
+insert into Client_Master values('C00005','Ravi Shankar','Delhi',100001,2000);
+insert into Client_Master values('C00006','Roopa','Mumbai',400050,0);
+
+create table Sale_Order(Order_no varchar(6) primary key,Order_date date,Client_no varchar(6),Salesman varchar(6),Dely_date date,Order_status varchar(15),
+Foreign Key (Client_no) references Client_Master(Client_No));
+insert into Sale_Order values('O19001','12-JAN-2013','C00001','S00001','20-JAN-2013','In Process');
+insert into Sale_Order values('O19002','25-JAN-2013','C00002','S00002','27-JAN-2013','Cancelled');
+insert into Sale_Order values('O19003','18-FEB-2013','C00003','S00003','20-FEB-2013','Fulfilled');
+insert into Sale_Order values('O19004','03-APR-2013','C00004','S00001','07-APR-2013','Fulfilled');
+insert into Sale_Order values('O46866','20-MAY-2013','C00005','S00002','07-APR-2013','Cancelled');
+insert into Sale_Order values('O19008','24-MAY-2013','C00005','S00004','06-MAY-2013','In Process');
+
+01.select * from Client_Master where Bal_due=0;
+02.select * from Client_Master where Bal_due>5000;
+03.select * from Client_Master where Bal_due between 5000 and 20000;
+04.select * from Client_Master where City like 'C%' or City like 'D%';
+05.select * from Client_Master where Pincode like '%1';
+06.update Client_Master set city='Jaipur' where Client_No='C00004';
+07.select * from Client_Master where Client_No in(select Client_no from Sale_Order where Order_Status='Cancelled');
+08.select * from Client_Master where City='Mumbai';
+09.select Name,City as Address from Client_Master where Client_No in (select Client_No from Sale_Order where Order_No in('O19003','O19002'));
+10.select name||' live in the city of '|| city from Client_Master;
+11.select Client_No,name,city,pincode from Client_Master where Client_No in (select Client_No from sale_Order where Order_Status='In Process');
