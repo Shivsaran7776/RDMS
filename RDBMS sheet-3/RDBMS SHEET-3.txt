@@ -1,0 +1,62 @@
+create table data_dept(deptcode varchar(4) primary key,deptname varchar(15));
+insert into data_dept values('D301','Sales');
+insert into data_dept values('D302','Account');
+insert into data_dept values('D707','Research');
+insert into data_dept values('D909','Advertising');
+insert into data_dept values('D202','Stock');
+insert into data_dept values('D110','Computer');
+insert into data_dept values('D305','Marketing');
+
+create table client_master(empcode varchar(4)primary key,empname varchar(10),address varchar(30),age number(2),dept_code varchar(4),foreign key(dept_code) references data_dept(deptcode));
+insert into client_master values('E101','Anjaly','Anjaly Nivas, Thiruvalla',25,'D301');
+insert into client_master values('E102','Bobby','Alapuzha',28,'D305');
+insert into client_master values('E103','Aravind','Chennai',31,'D305');
+insert into client_master values('E104','Lakshmi','Mannar',55,'D707');
+insert into client_master values('E105','Daisy','Chaithram,Angamaly',35,'D707');
+insert into client_master values('E106','Esha','Mumbai',23,'D707');
+insert into client_master values('E107','Georgy','Pala',45,'D909');
+insert into client_master values('E108','Prakash','Vennikulam',36,'D110');
+insert into client_master values('E109','Madhavan','Mynakum, Kottayam',46,'D202');
+insert into client_master values('E110','Anugraha','Aparna, Angamaly',47,'D301');
+insert into client_master values('E111','Deva','Trichy',38,'D301');
+insert into client_master values('E112','Saju','Dhanya, Ernakulam',27,'D202');
+insert into client_master values('E113','Priyesh','Priya Nivas, Kottayam',26,'D302');
+
+create table sale_order(empcode varchar(4),basic number(5),hra number(5),da number(5),foreign key(empcode) references client_master(empcode));
+insert into sale_order values('E101',4000,1900,1500);
+insert into sale_order values('E102',4500,2200,2000);
+insert into sale_order values('E103',5000,2200,2000);
+insert into sale_order values('E104',7000,3000,2700);
+insert into sale_order values('E105',3000,1500,1200);
+insert into sale_order values('E106',5700,3000,2900);
+insert into sale_order values('E107',6200,3300,3000);
+insert into sale_order values('E108',5700,3700,3000);
+insert into sale_order values('E109',7500,4660,545);
+insert into sale_order values('E110',5000,300,100);
+insert into sale_order values('E111',6000,200,120);
+
+01.update client_master set age=age+15 where empcode='E107';
+02.create view employee_details as select * from client_master where age between 35 and 45;
+select * from employee_details;
+03.select c.empcode,c.empname,c.address,s.basic+s.hra+s.da as netplay from client_master c,sale_order s where c.empcode=s.empcode;
+04.select 'Employees with '|| empcode || ' draws a basic salary ' || basic from sale_order;
+05.select c.empname,c.address,s.basic from client_master c,sale_order s where c.empcode=s.empcode and s.basic between 5000 and 7000;
+06.alter table sale_order add total_salary number(6);
+update sale_order set total_salary=basic+hra+da;
+select * from sale_order where empcode>'E107';
+07.select * from client_master where age between 25 and 45;
+08.select dept_code,count(*) from client_master group by dept_code order by dept_code asc;
+09.select c.empcode,c.empname,c.address,d.deptcode from client_master c,data_dept d where c.dept_code=d.deptcode and d.deptname in('Account','Stock');
+10.select max(age)as MAXIMUM_AGE,min(age) as MINIMUM_AGE, ROUND(AVG(age),2)as AVERAGE_AGE from client_master;
+11.
+12.select c.*,s.*,d.deptname from client_master c,sale_order s,data_dept d where c.empcode=s.empcode and c.dept_code=d.deptcode and c.empcode='E105';
+13.select count(*) from client_master where age<45;
+14.alter table sale_order add Net_Salary number(6);
+update sale_order set Net_Salary=(basic+hra+da);
+select * from sale_order;
+15.update sale_order set basic=basic+(basic*0.15) where empcode='E110';
+update sale_order set Net_Salary=(basic+hra+da) where empcode='E110';
+select * from sale_order;
+16.select c.empname,c.address,c.empcode,c.age,s.Net_Salary from client_master c,sale_order s where c.empcode=s.empcode;
+17.select c.* from client_master c,sale_order s where c.empcode=s.empcode and s.basic>6000;
+
